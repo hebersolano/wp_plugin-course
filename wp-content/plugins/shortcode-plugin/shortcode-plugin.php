@@ -18,6 +18,7 @@ function sp_show_static_msg() {
 
 // Parameterize shortcode []
 add_shortcode('student', 'sp_handle_student_data');
+
 function sp_handle_student_data($atts) {
   $atts = shortcode_atts(array(
     'name' => 'Default student',
@@ -29,7 +30,7 @@ function sp_handle_student_data($atts) {
 
 // shortcode with DB operation
 // add_shortcode('list-posts', 'sp_handle_list_posts');
-add_shortcode('list-posts', 'sp_handle_list_posts_wp_query_class');
+add_shortcode('list-posts', 'sp_handle_list_posts');
 
 function sp_handle_list_posts() {
   global $wpdb;
@@ -75,7 +76,7 @@ function sp_handle_list_posts_wp_query_class($atts) {
       $output .= '<li><a href="' . get_the_permalink() . '">' . get_the_title() . "</a></li>";
     }
     $output .= "</ul>";
-    
+
     return $output;
   }
 

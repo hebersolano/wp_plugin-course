@@ -25,8 +25,8 @@ services:
     # environment:
     #   PMA_HOST: db
     #   PMA_PORT: 3306
-    volumes:
-      - ./sessions:/sessions
+    # volumes:
+    #   - ./sessions:/sessions
     expose:
       - "9000"
 
@@ -38,7 +38,7 @@ services:
       MYSQL_USER: exampleuser
       MYSQL_PASSWORD: examplepass
       MYSQL_RANDOM_ROOT_PASSWORD: "1"
-      MYSQL_ROOT_PASSWORD: 'sqlpassword'
+      MYSQL_ROOT_PASSWORD: "sqlpassword"
     volumes:
       - db:/var/lib/mysql
 
