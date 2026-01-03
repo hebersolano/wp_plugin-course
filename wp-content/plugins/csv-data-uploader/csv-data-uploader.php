@@ -54,9 +54,64 @@ function cdu_display_uploader_form() {
 
 // add script file
 add_action("wp_enqueue_scripts", "cdu_add_script_file");
+
 function cdu_add_script_file() {
   wp_enqueue_script("cdu-script-js", plugin_dir_url(__FILE__) . "assets/script.js", array("jquery"));
+
+  wp_localize_script("cdu-script-js", "cdu_object", array(
+    "ajax_url" => admin_url("admin-ajax.php")
+  ));
 }
-// /home/solano/development/wordpress/wp_plugin-course/wp-content/plugins/csv-data-uploader/assets/script.js
+
+// capture ajax request
+add_action("wp_ajax_cdu_submit_form_data", "cdu_ajax_handler");
+add_action("wp_ajax_nopriv_cdu_submit_form_data", "cdu_ajax_handler"); // user is logged out
 
 //# Upload scv, read all data using code and save into DB
+
+function cdu_ajax_handler() {
+
+  if ($_FILES["csv_data_file"]) {
+    $csvFile = $_FILES["csv_data_file"]["tmp_name"]; // temp file location & name
+
+    $rsc = fopen($csvFile, "r");
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . "students_data";
+
+    if ($rsc) {
+      $row = 0;
+
+      while (($data = fgetcsv($rsc, 1000, ",")) !== false) {
+        if ($row == 0) {
+
+          $row++;
+          continue;
+        }
+
+        // insert data
+        $wpdb->insert($table_name, array(
+          "name" => $data[1],
+          "email" => $data[2],
+          "age" => $data[3],
+          "phone" => $data[4],
+          "photo" => $data[5]
+        ));
+      }
+
+      fclose($rsc);
+
+      echo json_encode(array(
+        "status" => 1,
+        "message" => "Data uploaded successfully"
+      ));
+    }
+  } else {
+    echo json_encode(array(
+      "status" => 0,
+      "message" => "No File Found"
+    ));
+  };
+
+  exit;
+}
