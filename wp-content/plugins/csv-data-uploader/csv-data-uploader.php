@@ -14,7 +14,6 @@ function cdu_create_table() {
   global $wpdb;
 
   $table_name = $wpdb->prefix . "students_data";
-
   $charset_collate = $wpdb->get_charset_collate();
 
   $sql_command = "CREATE TABLE $table_name (
@@ -28,6 +27,7 @@ function cdu_create_table() {
 ) $charset_collate;";
 
   require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
   dbDelta($sql_command);
 }
 
@@ -36,7 +36,6 @@ function cdu_create_table() {
 define("CDU_PLUGIN_DIR_PATH", plugin_dir_path(__FILE__));  // define path constant 
 
 add_shortcode("csv-data-uploader", "cdu_display_uploader_form");
-
 function cdu_display_uploader_form() {
   // start php buffer
   ob_start();
@@ -54,7 +53,6 @@ function cdu_display_uploader_form() {
 
 // add script file
 add_action("wp_enqueue_scripts", "cdu_add_script_file");
-
 function cdu_add_script_file() {
   wp_enqueue_script("cdu-script-js", plugin_dir_url(__FILE__) . "assets/script.js", array("jquery"));
 
