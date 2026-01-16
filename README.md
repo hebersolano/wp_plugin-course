@@ -12,5 +12,7 @@
 - shortcode with DB operation
 - shortcode and WP_Query class
 - csv uploader
+- widget
+- metaboxes
 
 # Links
